@@ -31,15 +31,16 @@ resource "null_resource" "tf_env" {
     echo_export "TF_VAR_license_model" "${coalesce(var.license_model,"-")}"
     echo_export "TF_VAR_compartment_ocid" "${coalesce(var.compartment_ocid,"-")}"  
     echo "# Terraform Locals" >> $ENV_FILE
-    echo_export "CONTAINER_PREFIX" "${local.local_container_prefix}"
+    echo_export "BASTION_IP" "${local.local_bastion_ip}"
+    echo_export "COMPUTE_IP" "${local.local_compute_ip}"
     echo_export "IDCS_URL" "${local.local_idcs_url}"
     echo_export "OCIR_HOST" "${local.local_ocir_host}" 
     echo "# Fixed" >> $ENV_FILE
     echo_export "TF_VAR_db_type" "none"
-    echo_export "TF_VAR_deploy_type" "container_instance"
+    echo_export "TF_VAR_deploy_type" "public_compute"
     echo_export "TF_VAR_language" "python"
     echo_export "TF_VAR_ui_type" "html"
-    # echo_export "OCI_STARTER_CREATION_DATE" "2025-11-02-16-40-06-981738"
+    # echo_export "OCI_STARTER_CREATION_DATE" "2025-11-02-16-45-09-097051"
     # echo_export "OCI_STARTER_VERSION" "4.2"
     # echo_export "OCI_STARTER_PARAMS" "prefix,java_framework,java_vm,java_version,ui_type,db_type,license_model,mode,infra_as_code,db_password,oke_type,security,deploy_type,language"
     chmod 755 $ENV_FILE
@@ -105,11 +106,7 @@ resource "null_resource" "build_deploy" {
         EOT
   }
   depends_on = [
-    oci_apigateway_api.starter_api,
-    oci_apigateway_gateway.starter_apigw,
-    oci_artifacts_container_repository.starter_repo_app,
-    oci_artifacts_container_repository.starter_repo_ui,
-    oci_identity_policy.starter-ci_policy,
+    oci_core_instance.starter_compute,
     tls_private_key.ssh_key,  
     null_resource.tf_env  
   ]
@@ -117,17 +114,6 @@ resource "null_resource" "build_deploy" {
   triggers = {
     always_run = "${timestamp()}"
   }      
-}
-# PART2
-#
-# In case like instance_pool, oke, function, container_instance, ...
-# More terraform resources need to be created after build_deploy.
-# Reread the env variables
-data "external" "env_part2" {
-  program = ["cat", "${local.project_dir}/target/resource_manager_variables.json"]
-  depends_on = [
-    null_resource.build_deploy
-  ]
 }
 
 ## AFTER_BUILD
@@ -153,9 +139,7 @@ resource "null_resource" "after_build" {
         $BIN_DIR/done.sh          
         EOT
   }
-  depends_on = [
-    oci_apigateway_deployment.starter_apigw_deployment,
-    oci_container_instances_container_instance.starter_container_instance,      
+  depends_on = [      
     null_resource.build_deploy
   ]
 

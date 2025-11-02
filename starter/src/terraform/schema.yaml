@@ -31,11 +31,9 @@ variableGroups:
   variables:
   - auth_token
   - availability_domain_number
-  - build_src
   - certificate_ocid
   - db_password
   - db_user
-  - git_url
   - group_name
   - home_region
   - idcs_domain_name
@@ -51,7 +49,6 @@ variableGroups:
   - lz_security_cmp_ocid
   - lz_serv_cmp_ocid
   - lz_web_cmp_ocid
-  - openapi_spec
   - region
   - ssh_private_key
   - ssh_public_key
@@ -76,10 +73,6 @@ variables:
     type: string
     title: availability_domain_number
     required: false
-  build_src:    
-    type: string
-    title: build_src
-    required: false
   certificate_ocid:    
     type: string
     title: certificate_ocid
@@ -100,10 +93,6 @@ variables:
     type: string
     title: Database User
     required: false
-  git_url:    
-    type: string
-    title: git_url
-    required: false
   group_name:    
     type: string
     title: group_name
@@ -123,9 +112,9 @@ variables:
   infra_as_code:
     type: enum
     enum:
-      - terraform_object_storage
-      - resource_manager
       - terraform_local
+      - resource_manager
+      - terraform_object_storage
       - from_resource_manager
     title: infra_as_code
     required: false
@@ -144,8 +133,8 @@ variables:
   license_model:
     type: enum
     enum:
-      - BRING_YOUR_OWN_LICENSE
       - LICENSE_INCLUDED
+      - BRING_YOUR_OWN_LICENSE
     title: Licence Model
     description: "BRING_YOUR_OWN_LICENSE or LICENSE_INCLUDED"
     required: true
@@ -176,10 +165,6 @@ variables:
   lz_web_cmp_ocid:
     type: oci:identity:compartment:id
     title: lz_web_cmp_ocid
-    required: false
-  openapi_spec:    
-    type: string
-    title: openapi_spec
     required: false
   prefix:    
     type: string

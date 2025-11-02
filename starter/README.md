@@ -14,6 +14,7 @@
     - ui        : Source of the User Interface
     - db        : SQL files of the database
     - terraform : Terraform scripts
+    - compute   : Contains the deployment files to Compute
 
 Help (Tutorial + How to customize): https://www.ocistarter.com/help
 
