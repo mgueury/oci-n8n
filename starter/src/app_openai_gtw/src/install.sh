@@ -8,7 +8,7 @@ sudo dnf install -y python3.12 python3.12-pip python3-devel
 sudo update-alternatives --set python /usr/bin/python3.12
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-git clone https://github.com/jin38324/OCI_GenAI_access_gateway.git
+# git clone https://github.com/jin38324/OCI_GenAI_access_gateway.git
 cd OCI_GenAI_access_gateway
 
 # Install virtual env python_env
