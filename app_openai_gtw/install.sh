@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd $SCRIPT_DIR
+
 # OCI_GenAI_access_gateway
 sudo dnf install -y git
 sudo dnf install -y python3.12 python3.12-pip python3-devel
