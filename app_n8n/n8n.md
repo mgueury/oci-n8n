@@ -58,9 +58,15 @@ cd app
 # python app.py
 gunicorn app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --timeout 600 --bind 0.0.0.0:8088
 
-
-
 Connection:
 -----------
 ocigenerativeai
 http://0.0.0.0:8088/v1
+
+or 
+
+http://public-ip/app/v1
+
+SSH
+---
+ssh -L5678:0.0.0.0:5678 opc@xxx
