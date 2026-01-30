@@ -31,4 +31,5 @@ export TF_VAR_region=`cat /tmp/instance.json | jq -r .region`
 sed -i '/^PORT =.*/i import os\n' config.py
 sed -i "s&OCI_COMPARTMENT = \"ocid1.compartment.oc1..xxx\"&OCI_COMPARTMENT = os.environ['TF_VAR_compartment_ocid']&" config.py
 
+# models.yaml
 sed -i "s&compartment_id: ocid1.compartment.oc1\.\..*$&compartment_id: $TF_VAR_compartment_ocid&" models.yaml
